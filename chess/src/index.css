@@ -26,13 +26,11 @@ body{
   width:100%;
   box-sizing: border-box;
   margin: 0;
-  border: var(--border);
 }
 div{
   box-sizing: border-box;
 }
 .app{
-  border:var(--border);
   position: fixed;
   height: 100%;
   width: 100%;
