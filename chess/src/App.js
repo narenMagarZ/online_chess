@@ -1,8 +1,10 @@
+import Playground from "./component/playground/playground";
 
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
+      <Playground />
     </div>
   );
 }
