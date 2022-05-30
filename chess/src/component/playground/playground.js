@@ -191,25 +191,27 @@ function Playground(){
         possiblePath.current= []
     }
 
+    function ActivateComputedPath(validBox){
+        if(validBox.children.length > 0) {
+            if(validBox.children[0]?.dataset.type === 'host') return false
+            else {
+            validBox?.classList.add('possible-path-bg')
+            possiblePath.current.push(validBox)
+            return false
+            }
+        }
+        else {
+            validBox?.classList.add('possible-path-bg') 
+            return true
+        }
+    }
+
     function ComputePathForBishop(X,Y){
         let J = X 
         let K = Y
 
 
-        function ActivateComputedPath(validBox){
-            if(validBox.children.length > 0) {
-                if(validBox.children[0]?.dataset.type === 'host') return false
-                else {
-                validBox?.classList.add('possible-path-bg')
-                possiblePath.current.push(validBox)
-                return false
-                }
-            }
-            else {
-                validBox?.classList.add('possible-path-bg') 
-                return true
-            }
-        }
+  
 
         for(;;){
             K -- 
@@ -261,35 +263,35 @@ function Playground(){
                     // for up
                     for(let i = X  - 1;i >= 0;i--){
                         const validBox = playgroundCoordinate.current[i][Y]
-                        if(validBox.children.length > 0) break
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
+                        const isPathActivated = ActivateComputedPath(validBox)
+                        if(!isPathActivated) break
+                        else possiblePath.current.push(validBox)
                     }
 
                     // for down 
                     for(let i = X + 1 ; i <= 7 ; i++ ){
                         const validBox = playgroundCoordinate.current[i][Y]
-                        if(validBox.children.length > 0) break
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
+                        const isPathActivated = ActivateComputedPath(validBox)
+                        if(!isPathActivated) break
+                        else possiblePath.current.push(validBox)
 
                     }
 
                     // for left 
                     for(let i = Y - 1 ; i >= 0 ; i--){
                         const validBox = playgroundCoordinate.current[X][i]
-                        if(validBox.children.length > 0) break
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
+                        const isPathActivated = ActivateComputedPath(validBox)
+                        if(!isPathActivated) break
+                        else possiblePath.current.push(validBox)
 
                     }
 
                     // for right 
                     for(let i = Y  + 1; i <= 7 ; i++){
                         const validBox = playgroundCoordinate.current[X][i]
-                        if(validBox.children.length > 0) break
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
+                        const isPathActivated = ActivateComputedPath(validBox)
+                        if(!isPathActivated) break
+                        else possiblePath.current.push(validBox)
                     }
     }
 
