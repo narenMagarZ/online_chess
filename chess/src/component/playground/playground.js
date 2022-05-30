@@ -136,6 +136,11 @@ function Playground(){
                     ComputePathForBishop(X,Y)
                     console.log(possiblePath.current)
                     for(let i = 0 ;i<possiblePath.current.length ;i++){
+                        console.log(possiblePath.current[i].children,'these are my children')
+                        if(possiblePath.current[i].children.length > 0){
+                            possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
+
+                        }
                         possiblePath.current[i].addEventListener('click',AttachPiece)
                     }
                     break;
@@ -172,6 +177,7 @@ function Playground(){
 
     
     function AttachPiece({target}){
+        console.log(target,'this is targeted element')
         const {cord} = target.dataset
         const {X,Y} = JSON.parse(cord)
         const pieceWrapperCord = JSON.stringify({X,Y})
@@ -209,10 +215,6 @@ function Playground(){
     function ComputePathForBishop(X,Y){
         let J = X 
         let K = Y
-
-
-  
-
         for(;;){
             K -- 
             J --
@@ -260,7 +262,6 @@ function Playground(){
 
     function ComputePathForRook(X,Y){
 
-                    // for up
                     for(let i = X  - 1;i >= 0;i--){
                         const validBox = playgroundCoordinate.current[i][Y]
                         const isPathActivated = ActivateComputedPath(validBox)
@@ -268,7 +269,6 @@ function Playground(){
                         else possiblePath.current.push(validBox)
                     }
 
-                    // for down 
                     for(let i = X + 1 ; i <= 7 ; i++ ){
                         const validBox = playgroundCoordinate.current[i][Y]
                         const isPathActivated = ActivateComputedPath(validBox)
@@ -277,7 +277,6 @@ function Playground(){
 
                     }
 
-                    // for left 
                     for(let i = Y - 1 ; i >= 0 ; i--){
                         const validBox = playgroundCoordinate.current[X][i]
                         const isPathActivated = ActivateComputedPath(validBox)
@@ -286,7 +285,6 @@ function Playground(){
 
                     }
 
-                    // for right 
                     for(let i = Y  + 1; i <= 7 ; i++){
                         const validBox = playgroundCoordinate.current[X][i]
                         const isPathActivated = ActivateComputedPath(validBox)
