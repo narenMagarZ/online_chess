@@ -126,34 +126,59 @@ function Playground(){
 
                     // for up
                     for(let i = X  - 1;i >= 0;i--){
-                        possiblePath.current.push(playgroundCoordinate.current[i][Y])
+                        const validBox = playgroundCoordinate.current[i][Y]
+                        console.log(validBox)
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
+                        
                     }
 
                     // for down 
 
                     for(let i = X + 1 ; i <= 7 ; i++ ){
-                        possiblePath.current.push(playgroundCoordinate.current[i][Y])
+                        const validBox = playgroundCoordinate.current[i][Y]
+                        console.log(validBox)
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
 
                     }
 
                     // for left 
 
                     for(let i = Y - 1 ; i >= 0 ; i--){
-                        possiblePath.current.push(playgroundCoordinate.current[X][i])
+                        const validBox = playgroundCoordinate.current[X][i]
+                        console.log(validBox)
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
 
                     }
 
                     // for right 
 
                     for(let i = Y  + 1; i <= 7 ; i++){
-                        possiblePath.current.push(playgroundCoordinate.current[X][i])
+                        const validBox = playgroundCoordinate.current[X][i]
+                        console.log(validBox)
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
                     }
 
-                    console.log(possiblePath.current)
+                    // console.log(possiblePath.current)
 
                     
                     break;
                 case "knight":
+
+                    if(X-2 >=0 && Y-1 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-2][Y-1])
+                    if(X-2 >=0 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-2][Y+1])
+                    if(X+2 <=7 && Y-1 >= 0 ) possiblePath.current.push(playgroundCoordinate.current[X+2][Y-1])
+                    if(X+2 <=7 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+2][Y+1])
+                    if(X-1 >=0 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-1][Y-2])
+                    if(X-1 >=0 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-1][Y+2])
+                    if(X+1 <=7 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X+1][Y-2])
+                    if(X+1 <=7 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+1][Y+2])
+
+                    console.log(possiblePath.current)
+
                     break;
                 case "bishop":
                     break;

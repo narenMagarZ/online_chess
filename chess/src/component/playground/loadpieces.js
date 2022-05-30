@@ -12,7 +12,7 @@ import REMOTE_QUEEN from '../pieces/remote_pieces/remote_queen.svg'
 export const LoadHostPieces = ()=>{
     return [
         {id:'rook',val:HOST_ROOK,type:'host'},
-        {id:'knight',val:HOST_KNIGHT,tyoe:'host'},
+        {id:'knight',val:HOST_KNIGHT,type:'host'},
         {id:'bishop',val:HOST_BISHOP,type:'host'},
         {id:'queen',val:HOST_QUEEN,type:'host'},
         {id:'king',val:HOST_KING,type:'host'},
