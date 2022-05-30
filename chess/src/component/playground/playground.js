@@ -3,10 +3,12 @@ import './playground.css'
 import {LoadHostPieces,LoadRemotePieces} from './loadpieces'
 import BK_PAWN  from '../pieces/remote_pieces/remote_pawn.svg'
 import WH_PAWN from '../pieces/host_pieces/host_pawn.svg'
+import { AddAttribute } from './utils/addattribute'
 
 function Playground(){
     const playground = useRef(null)
     const possiblePath = useRef([])
+    const activePiece = useRef(null)
     const playgroundCoordinate = useRef([
         [null,null,null,null,null,null,null,null],
         [null,null,null,null,null,null,null,null],
@@ -29,11 +31,11 @@ function Playground(){
                     const colWrapper = document.createElement('div')
                     colWrapper.setAttribute('id','col-wrapper')
                     if(!backgroundCover){
-                        colWrapper.style.background = "#359e76"
+                        colWrapper.setAttribute('class','cover-bg')
                         backgroundCover = true
                     }
                     else {
-                        colWrapper.style.background = "transparent"
+                        colWrapper.setAttribute('class','non-cover-bg')
                         backgroundCover = false
                     }
                     playgroundCoordinate.current[row][col] = colWrapper
@@ -48,33 +50,19 @@ function Playground(){
                         pieceWrapper.setAttribute('data-cord',pieceWrapperCord)
                         if(row === 0){
                             const {id,val,type} = LoadRemotePieces()[col]
-                            piece.setAttribute('src',val)
-                            pieceWrapper.setAttribute('data-id',id)
-                            pieceWrapper.setAttribute('data-type',type)
+                            AddAttribute(piece,pieceWrapper,id,type,val)
                         }
                         else if(row === 7){
                             const {id,val,type} = LoadHostPieces()[col]
-                            piece.setAttribute('src',val)
-                            pieceWrapper.setAttribute('data-id',id)
-                            pieceWrapper.setAttribute('data-type',type)
+                            AddAttribute(piece,pieceWrapper,id,type,val)
                         }
-                        else if(row === 1){
-                            piece.setAttribute('src',BK_PAWN)
-                            pieceWrapper.setAttribute('data-id','pawn')
-                            pieceWrapper.setAttribute('data-type','remote')
-                        }
-                        else if(row === 6){
-                            piece.setAttribute('src',WH_PAWN)
-                            pieceWrapper.setAttribute('data-id','pawn')
-                            pieceWrapper.setAttribute('data-type','host')
-                        }
+                        else if(row === 1) AddAttribute(piece,pieceWrapper,'pawn','remote',BK_PAWN)
+                        else if(row === 6) AddAttribute(piece,pieceWrapper,'pawn','host',WH_PAWN)
                         pieceWrapper.appendChild(piece)
                         colWrapper.appendChild(pieceWrapper)
                     }
                     rowWrapper.appendChild(colWrapper)
                 }
-              
-
                 backgroundCover =  backgroundCover === true ? false : true
                 playground.current.appendChild(rowWrapper)
             }
@@ -85,26 +73,85 @@ function Playground(){
         const {cord,id,type} = target.dataset
         const pieceWrapperCord = JSON.parse(cord)
         console.log(pieceWrapperCord,id,type)
+        possiblePath.current = []
         let {X,Y} = pieceWrapperCord
         X = parseInt(X)
         Y = parseInt(Y)
+        activePiece.current = target
         if(type === 'host'){
             switch(id){
                 case "pawn":
+
                     possiblePath.current.push(playgroundCoordinate.current[X-1][Y])
                     possiblePath.current.push(playgroundCoordinate.current[X-1][Y-1])
                     possiblePath.current.push(playgroundCoordinate.current[X-1][Y+1])
-
-                    for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
-                        console.log(possiblePath.current[pathIndex])
-                        console.log(possiblePath.current[pathIndex].children.length)
-                        const isValidPath = possiblePath.current[pathIndex].children.length
-                        if(isValidPath === 0){
-                            possiblePath.current[pathIndex].style.background = "#0000001f"
+                    
+                    const frontPiece = possiblePath.current[0]
+                    const leftAngledPiece = possiblePath.current[1]
+                    const rightAnledPiece = possiblePath.current[2]
+                    if(frontPiece?.children.length === 0){
+                        frontPiece.classList.add('possible-path-bg')
+                        frontPiece.addEventListener('click',AttachPiece)
+                    }
+                    if(leftAngledPiece?.children.length === 1){
+                        console.log(leftAngledPiece.children[0])
+                        const pieceType = leftAngledPiece.children[0].dataset.type
+                        console.log(pieceType)
+                        if(pieceType === 'remote'){
+                            leftAngledPiece.classList.add('possible-path-bg')
+                            // leftAngledPiece.removeEventListener('click',ComputePossiblePath)
+                            // leftAngledPiece.addEventListener('click',AttachPiece)
                         }
                     }
+                    if(rightAnledPiece?.children.length === 1){
+                        console.log(rightAnledPiece.children[0])
+                        const pieceType = rightAnledPiece.children[0].dataset.type
+                        console.log(pieceType)
+                    }
+
+                    // for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
+                    //     console.log(possiblePath.current[pathIndex])
+                    //     console.log(possiblePath.current[pathIndex]?.children.length)
+                    //     const isValidPath = possiblePath.current[pathIndex]?.children.length
+                    //     if(isValidPath === 0){
+                    //         possiblePath.current[pathIndex].classList.add('class','possible-path-bg')
+                    //         possiblePath.current[pathIndex].addEventListener('click',AttachPiece)
+                    //     }
+                    //     else {
+
+                    //     }
+                    // }
                     break;
                 case "rook":
+
+                    // for up
+                    for(let i = X  - 1;i >= 0;i--){
+                        possiblePath.current.push(playgroundCoordinate.current[i][Y])
+                    }
+
+                    // for down 
+
+                    for(let i = X + 1 ; i <= 7 ; i++ ){
+                        possiblePath.current.push(playgroundCoordinate.current[i][Y])
+
+                    }
+
+                    // for left 
+
+                    for(let i = Y - 1 ; i >= 0 ; i--){
+                        possiblePath.current.push(playgroundCoordinate.current[X][i])
+
+                    }
+
+                    // for right 
+
+                    for(let i = Y  + 1; i <= 7 ; i++){
+                        possiblePath.current.push(playgroundCoordinate.current[X][i])
+                    }
+
+                    console.log(possiblePath.current)
+
+                    
                     break;
                 case "knight":
                     break;
@@ -123,8 +170,28 @@ function Playground(){
         }
 
 
+
     }
     
+    function AttachPiece({target}){
+
+        console.log(target,'this is target elem')
+        const {cord} = target.dataset
+        const {X,Y} = JSON.parse(cord)
+        console.log(cord,'cord of parnt')
+        const pieceWrapperCord = JSON.stringify({X,Y})
+        console.log(pieceWrapperCord)
+        
+        console.log(target.children,'these are children of target element')
+        
+        activePiece.current.setAttribute('data-cord',pieceWrapperCord)
+        target.appendChild(activePiece.current)
+        for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
+            possiblePath.current[pathIndex]?.classList.remove('possible-path-bg')
+            possiblePath.current[pathIndex]?.removeEventListener('click',AttachPiece)
+        }
+        possiblePath.current= []
+    }
 
     useEffect(()=>{
         BuildPlayground()
