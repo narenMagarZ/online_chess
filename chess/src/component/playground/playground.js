@@ -112,46 +112,8 @@ function Playground(){
                     }
                     break;
                 case "rook":
-
-                    // for up
-                    for(let i = X  - 1;i >= 0;i--){
-                        const validBox = playgroundCoordinate.current[i][Y]
-                        console.log(validBox)
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
-                        
-                    }
-
-                    // for down 
-
-                    for(let i = X + 1 ; i <= 7 ; i++ ){
-                        const validBox = playgroundCoordinate.current[i][Y]
-                        console.log(validBox)
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
-
-                    }
-
-                    // for left 
-
-                    for(let i = Y - 1 ; i >= 0 ; i--){
-                        const validBox = playgroundCoordinate.current[X][i]
-                        console.log(validBox)
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
-
-                    }
-
-                    // for right 
-
-                    for(let i = Y  + 1; i <= 7 ; i++){
-                        const validBox = playgroundCoordinate.current[X][i]
-                        console.log(validBox)
-                        validBox?.classList.add('possible-path-bg')
-                        possiblePath.current.push(validBox)
-                    }
-
-                    // console.log(possiblePath.current)
+                    ComputePathForRook(X,Y)
+                    console.log(possiblePath.current)
 
                     
                     break;
@@ -170,55 +132,17 @@ function Playground(){
 
                     break;
                 case "bishop":
-
-                    // for left up 
-                    J = X 
-                    K = Y
-                    for(;;){
-                        K -- 
-                        J --
-                        if(J < 0 || K < 0) break;
-                        // console.log(playgroundCoordinate.current[j][k])
-                        const validBox = playgroundCoordinate.current[J][K]
-                        possiblePath.current.push(validBox)
-
-                    }
-                    J = X 
-                    K = Y 
-                    for(;;){
-                        K ++ 
-                        J --
-                        if(J < 0 || K > 7) break;
-                        // console.log(playgroundCoordinate.current[j][k])
-                        const validBox = playgroundCoordinate.current[J][K]
-                        possiblePath.current.push(validBox)
-
-                    }
-                    J = X
-                    K = Y
-                    for(;;){
-                        J ++ 
-                        K --
-                        if(J > 7 || K < 0) break;
-                        // console.log(playgroundCoordinate.current[j][k])
-                        const validBox = playgroundCoordinate.current[J][K]
-                        possiblePath.current.push(validBox)
-                    }
-                    J = X
-                    K = Y
-                    for(;;){
-                        J ++ 
-                        K ++ 
-                        if(J > 7 || K > 7) break;
-                        // console.log(playgroundCoordinate.current[j][k])
-                        const validBox = playgroundCoordinate.current[J][K]
-                        possiblePath.current.push(validBox)
-                    }
+                    ComputePathForBishop(X,Y)
                     console.log(possiblePath.current)
         
 
                     break;
                 case "queen":
+                    ComputePathForRook(X,Y)
+                    ComputePathForBishop(X,Y)
+                    console.log(possiblePath.current)
+        
+
                     break;
                 case "king":
                     J = X 
@@ -244,6 +168,84 @@ function Playground(){
 
 
 
+    }
+
+    function ComputePathForBishop(X,Y){
+        let J = X 
+        let K = Y
+        for(;;){
+            K -- 
+            J --
+            if(J < 0 || K < 0) break;
+            const validBox = playgroundCoordinate.current[J][K]
+            possiblePath.current.push(validBox)
+
+        }
+        J = X 
+        K = Y 
+        for(;;){
+            K ++ 
+            J --
+            if(J < 0 || K > 7) break;
+            const validBox = playgroundCoordinate.current[J][K]
+            possiblePath.current.push(validBox)
+
+        }
+        J = X
+        K = Y
+        for(;;){
+            J ++ 
+            K --
+            if(J > 7 || K < 0) break;
+            const validBox = playgroundCoordinate.current[J][K]
+            possiblePath.current.push(validBox)
+        }
+        J = X
+        K = Y
+        for(;;){
+            J ++ 
+            K ++ 
+            if(J > 7 || K > 7) break;
+            const validBox = playgroundCoordinate.current[J][K]
+            possiblePath.current.push(validBox)
+        }
+    }
+
+    function ComputePathForRook(X,Y){
+
+                    // for up
+                    for(let i = X  - 1;i >= 0;i--){
+                        const validBox = playgroundCoordinate.current[i][Y]
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
+                        
+                    }
+
+                    // for down 
+
+                    for(let i = X + 1 ; i <= 7 ; i++ ){
+                        const validBox = playgroundCoordinate.current[i][Y]
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
+
+                    }
+
+                    // for left 
+
+                    for(let i = Y - 1 ; i >= 0 ; i--){
+                        const validBox = playgroundCoordinate.current[X][i]
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
+
+                    }
+
+                    // for right 
+
+                    for(let i = Y  + 1; i <= 7 ; i++){
+                        const validBox = playgroundCoordinate.current[X][i]
+                        validBox?.classList.add('possible-path-bg')
+                        possiblePath.current.push(validBox)
+                    }
     }
     
     function AttachPiece({target}){
