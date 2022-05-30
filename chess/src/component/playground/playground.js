@@ -83,14 +83,12 @@ function Playground(){
         if(type === 'host'){
             switch(id){
                 case "pawn":
-
-                    possiblePath.current.push(playgroundCoordinate.current[X-1][Y])
-                    possiblePath.current.push(playgroundCoordinate.current[X-1][Y-1])
-                    possiblePath.current.push(playgroundCoordinate.current[X-1][Y+1])
-                    
+                    if((X-1) >=0 ) possiblePath.current.push(playgroundCoordinate.current[X-1][Y])
+                    if((X-1) >=0 && (Y-1) >=0 ) possiblePath.current.push(playgroundCoordinate.current[X-1][Y-1])
+                    if((X-1) >=0 && (Y+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[X-1][Y+1])
                     const frontPiece = possiblePath.current[0]
                     const leftAngledPiece = possiblePath.current[1]
-                    const rightAnledPiece = possiblePath.current[2]
+                    const rightAngledPiece = possiblePath.current[2]
                     if(frontPiece?.children.length === 0){
                         frontPiece.classList.add('possible-path-bg')
                         frontPiece.addEventListener('click',AttachPiece)
@@ -98,51 +96,53 @@ function Playground(){
                     if(leftAngledPiece?.children.length === 1){
                         console.log(leftAngledPiece.children[0])
                         const pieceType = leftAngledPiece.children[0].dataset.type
-                        console.log(pieceType)
                         if(pieceType === 'remote'){
                             leftAngledPiece.classList.add('possible-path-bg')
-                            // leftAngledPiece.removeEventListener('click',ComputePossiblePath)
-                            // leftAngledPiece.addEventListener('click',AttachPiece)
+                            console.log(leftAngledPiece.children,'this is left angled piece')
+                            leftAngledPiece.children[0].removeEventListener('click',ComputePossiblePath)
+                            leftAngledPiece.addEventListener('click',AttachPiece)
                         }
                     }
-                    if(rightAnledPiece?.children.length === 1){
-                        console.log(rightAnledPiece.children[0])
-                        const pieceType = rightAnledPiece.children[0].dataset.type
-                        console.log(pieceType)
+                    if(rightAngledPiece?.children.length === 1){
+                        console.log(rightAngledPiece.children[0])
+                        const pieceType = rightAngledPiece.children[0].dataset.type
+                        if(pieceType === 'remote'){
+                            rightAngledPiece.classList.add('possible-path-bg')
+                            console.log(rightAngledPiece.children,'this is right angled piece')
+                            rightAngledPiece.children[0].removeEventListener('click',ComputePossiblePath)
+                            rightAngledPiece.addEventListener('click',AttachPiece)  
+                        }
                     }
                     break;
                 case "rook":
                     ComputePathForRook(X,Y)
                     console.log(possiblePath.current)
-
-                    
+                    for(let i = 0 ;i<possiblePath.current.length ;i++){
+                        possiblePath.current[i].addEventListener('click',AttachPiece)
+                    }
                     break;
                 case "knight":
-
                     if(X-2 >=0 && Y-1 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-2][Y-1])
                     if(X-2 >=0 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-2][Y+1])
-                    if(X+2 <=7 && Y-1 >= 0 ) possiblePath.current.push(playgroundCoordinate.current[X+2][Y-1])
+                    if(X+2 <=7 && Y-1 >= 0) possiblePath.current.push(playgroundCoordinate.current[X+2][Y-1])
                     if(X+2 <=7 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+2][Y+1])
                     if(X-1 >=0 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-1][Y-2])
                     if(X-1 >=0 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-1][Y+2])
                     if(X+1 <=7 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X+1][Y-2])
                     if(X+1 <=7 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+1][Y+2])
-
                     console.log(possiblePath.current)
-
                     break;
                 case "bishop":
                     ComputePathForBishop(X,Y)
                     console.log(possiblePath.current)
-        
-
+                    for(let i = 0 ;i<possiblePath.current.length ;i++){
+                        possiblePath.current[i].addEventListener('click',AttachPiece)
+                    }
                     break;
                 case "queen":
                     ComputePathForRook(X,Y)
                     ComputePathForBishop(X,Y)
                     console.log(possiblePath.current)
-        
-
                     break;
                 case "king":
                     J = X 
@@ -155,7 +155,6 @@ function Playground(){
                     if((J+1) <= 7 && (K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J+1][K-1])
                     if((J+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[J+1][K])
                     if((J+1) <= 7 && (K+1) <= 7 ) possiblePath.current.push(playgroundCoordinate.current[J+1][K+1])
-
                     console.log(possiblePath.current)
                     break;
                 default :
@@ -170,16 +169,56 @@ function Playground(){
 
     }
 
+
+    
+    function AttachPiece({target}){
+        const {cord} = target.dataset
+        const {X,Y} = JSON.parse(cord)
+        const pieceWrapperCord = JSON.stringify({X,Y})
+        activePiece.current.setAttribute('data-cord',pieceWrapperCord)
+        if(target.children.length > 0){
+            const targetParent = target.parentElement
+            targetParent.removeChild(target)
+            targetParent.appendChild(activePiece.current)
+        }
+        else {
+            target.appendChild(activePiece.current)
+        }
+        for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
+            possiblePath.current[pathIndex]?.classList.remove('possible-path-bg')
+            possiblePath.current[pathIndex]?.removeEventListener('click',AttachPiece)
+        }
+        possiblePath.current= []
+    }
+
     function ComputePathForBishop(X,Y){
         let J = X 
         let K = Y
+
+
+        function ActivateComputedPath(validBox){
+            if(validBox.children.length > 0) {
+                if(validBox.children[0]?.dataset.type === 'host') return false
+                else {
+                validBox?.classList.add('possible-path-bg')
+                possiblePath.current.push(validBox)
+                return false
+                }
+            }
+            else {
+                validBox?.classList.add('possible-path-bg') 
+                return true
+            }
+        }
+
         for(;;){
             K -- 
             J --
             if(J < 0 || K < 0) break;
             const validBox = playgroundCoordinate.current[J][K]
-            possiblePath.current.push(validBox)
-
+            const isPathActivated = ActivateComputedPath(validBox)
+            if(!isPathActivated) break
+            else possiblePath.current.push(validBox)
         }
         J = X 
         K = Y 
@@ -188,7 +227,9 @@ function Playground(){
             J --
             if(J < 0 || K > 7) break;
             const validBox = playgroundCoordinate.current[J][K]
-            possiblePath.current.push(validBox)
+            const isPathActivated = ActivateComputedPath(validBox)
+            if(!isPathActivated) break
+            else possiblePath.current.push(validBox)
 
         }
         J = X
@@ -198,7 +239,9 @@ function Playground(){
             K --
             if(J > 7 || K < 0) break;
             const validBox = playgroundCoordinate.current[J][K]
-            possiblePath.current.push(validBox)
+            const isPathActivated = ActivateComputedPath(validBox)
+            if(!isPathActivated) break
+            else possiblePath.current.push(validBox)
         }
         J = X
         K = Y
@@ -207,7 +250,9 @@ function Playground(){
             K ++ 
             if(J > 7 || K > 7) break;
             const validBox = playgroundCoordinate.current[J][K]
-            possiblePath.current.push(validBox)
+            const isPathActivated = ActivateComputedPath(validBox)
+            if(!isPathActivated) break
+            else possiblePath.current.push(validBox)
         }
     }
 
@@ -216,56 +261,36 @@ function Playground(){
                     // for up
                     for(let i = X  - 1;i >= 0;i--){
                         const validBox = playgroundCoordinate.current[i][Y]
+                        if(validBox.children.length > 0) break
                         validBox?.classList.add('possible-path-bg')
                         possiblePath.current.push(validBox)
-                        
                     }
 
                     // for down 
-
                     for(let i = X + 1 ; i <= 7 ; i++ ){
                         const validBox = playgroundCoordinate.current[i][Y]
+                        if(validBox.children.length > 0) break
                         validBox?.classList.add('possible-path-bg')
                         possiblePath.current.push(validBox)
 
                     }
 
                     // for left 
-
                     for(let i = Y - 1 ; i >= 0 ; i--){
                         const validBox = playgroundCoordinate.current[X][i]
+                        if(validBox.children.length > 0) break
                         validBox?.classList.add('possible-path-bg')
                         possiblePath.current.push(validBox)
 
                     }
 
                     // for right 
-
                     for(let i = Y  + 1; i <= 7 ; i++){
                         const validBox = playgroundCoordinate.current[X][i]
+                        if(validBox.children.length > 0) break
                         validBox?.classList.add('possible-path-bg')
                         possiblePath.current.push(validBox)
                     }
-    }
-    
-    function AttachPiece({target}){
-
-        console.log(target,'this is target elem')
-        const {cord} = target.dataset
-        const {X,Y} = JSON.parse(cord)
-        console.log(cord,'cord of parnt')
-        const pieceWrapperCord = JSON.stringify({X,Y})
-        console.log(pieceWrapperCord)
-        
-        console.log(target.children,'these are children of target element')
-        
-        activePiece.current.setAttribute('data-cord',pieceWrapperCord)
-        target.appendChild(activePiece.current)
-        for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
-            possiblePath.current[pathIndex]?.classList.remove('possible-path-bg')
-            possiblePath.current[pathIndex]?.removeEventListener('click',AttachPiece)
-        }
-        possiblePath.current= []
     }
 
     useEffect(()=>{
