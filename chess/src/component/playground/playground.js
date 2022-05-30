@@ -77,6 +77,8 @@ function Playground(){
         let {X,Y} = pieceWrapperCord
         X = parseInt(X)
         Y = parseInt(Y)
+        let J = 0
+        let K = 0
         activePiece.current = target
         if(type === 'host'){
             switch(id){
@@ -108,19 +110,6 @@ function Playground(){
                         const pieceType = rightAnledPiece.children[0].dataset.type
                         console.log(pieceType)
                     }
-
-                    // for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
-                    //     console.log(possiblePath.current[pathIndex])
-                    //     console.log(possiblePath.current[pathIndex]?.children.length)
-                    //     const isValidPath = possiblePath.current[pathIndex]?.children.length
-                    //     if(isValidPath === 0){
-                    //         possiblePath.current[pathIndex].classList.add('class','possible-path-bg')
-                    //         possiblePath.current[pathIndex].addEventListener('click',AttachPiece)
-                    //     }
-                    //     else {
-
-                    //     }
-                    // }
                     break;
                 case "rook":
 
@@ -181,10 +170,69 @@ function Playground(){
 
                     break;
                 case "bishop":
+
+                    // for left up 
+                    J = X 
+                    K = Y
+                    for(;;){
+                        K -- 
+                        J --
+                        if(J < 0 || K < 0) break;
+                        // console.log(playgroundCoordinate.current[j][k])
+                        const validBox = playgroundCoordinate.current[J][K]
+                        possiblePath.current.push(validBox)
+
+                    }
+                    J = X 
+                    K = Y 
+                    for(;;){
+                        K ++ 
+                        J --
+                        if(J < 0 || K > 7) break;
+                        // console.log(playgroundCoordinate.current[j][k])
+                        const validBox = playgroundCoordinate.current[J][K]
+                        possiblePath.current.push(validBox)
+
+                    }
+                    J = X
+                    K = Y
+                    for(;;){
+                        J ++ 
+                        K --
+                        if(J > 7 || K < 0) break;
+                        // console.log(playgroundCoordinate.current[j][k])
+                        const validBox = playgroundCoordinate.current[J][K]
+                        possiblePath.current.push(validBox)
+                    }
+                    J = X
+                    K = Y
+                    for(;;){
+                        J ++ 
+                        K ++ 
+                        if(J > 7 || K > 7) break;
+                        // console.log(playgroundCoordinate.current[j][k])
+                        const validBox = playgroundCoordinate.current[J][K]
+                        possiblePath.current.push(validBox)
+                    }
+                    console.log(possiblePath.current)
+        
+
                     break;
                 case "queen":
                     break;
                 case "king":
+                    J = X 
+                    K = Y
+                    if((J-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J-1][K])
+                    if((J-1) >=0 && (K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J-1][K-1])
+                    if((K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J][K-1])
+                    if((J-1) >=0 && (K+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[J-1][K+1])
+                    if((K+1) <= 7 ) possiblePath.current.push(playgroundCoordinate.current[J][K+1])
+                    if((J+1) <= 7 && (K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J+1][K-1])
+                    if((J+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[J+1][K])
+                    if((J+1) <= 7 && (K+1) <= 7 ) possiblePath.current.push(playgroundCoordinate.current[J+1][K+1])
+
+                    console.log(possiblePath.current)
                     break;
                 default :
                     break;
