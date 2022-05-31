@@ -73,7 +73,20 @@ function Playground(){
         const {cord,id,type} = target.dataset
         const pieceWrapperCord = JSON.parse(cord)
         console.log(pieceWrapperCord,id,type)
+        console.log(possiblePath.current,'these are possible path')
+
+        if(possiblePath.current.length > 0){
+            const len = possiblePath.current.length
+            for(let i = 0 ; i < len ;i++) {
+                possiblePath.current[i].classList.remove('possible-path-bg')
+                possiblePath.current[i].removeEventListener('click',AttachPiece)
+                possiblePath.current[i] = []
+            }
+        }
+        console.log(possiblePath.current,'after removing')
+
         possiblePath.current = []
+
         let {X,Y} = pieceWrapperCord
         X = parseInt(X)
         Y = parseInt(Y)
@@ -118,19 +131,105 @@ function Playground(){
                     ComputePathForRook(X,Y)
                     console.log(possiblePath.current)
                     for(let i = 0 ;i<possiblePath.current.length ;i++){
+                        if(possiblePath.current[i].children.length > 0){
+                            possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
+                        }
                         possiblePath.current[i].addEventListener('click',AttachPiece)
                     }
                     break;
                 case "knight":
-                    if(X-2 >=0 && Y-1 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-2][Y-1])
-                    if(X-2 >=0 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-2][Y+1])
-                    if(X+2 <=7 && Y-1 >= 0) possiblePath.current.push(playgroundCoordinate.current[X+2][Y-1])
-                    if(X+2 <=7 && Y+1 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+2][Y+1])
-                    if(X-1 >=0 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X-1][Y-2])
-                    if(X-1 >=0 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X-1][Y+2])
-                    if(X+1 <=7 && Y-2 >= 0) possiblePath.current.push(playgroundCoordinate.current[X+1][Y-2])
-                    if(X+1 <=7 && Y+2 <= 7) possiblePath.current.push(playgroundCoordinate.current[X+1][Y+2])
+
+                    function ActivateComputedPathForKnight(validBox){
+                        if(validBox.children.length > 0){
+                            if(validBox.children[0].dataset.type === 'remote')
+                            return true
+                            else return false
+                        }
+                        else return true
+
+                    }
+       
+                    if(X-2 >=0 && Y-1 >= 0){
+                        const validBox = playgroundCoordinate.current[X-2][Y-1]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X-2 >=0 && Y+1 <= 7){
+                        const validBox = playgroundCoordinate.current[X-2][Y+1]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    }
+                    
+                    if(X+2 <=7 && Y-1 >= 0){
+                        const validBox = playgroundCoordinate.current[X+2][Y-1]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X+2 <=7 && Y+1 <= 7){
+                        const validBox = playgroundCoordinate.current[X+2][Y+1]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X-1 >=0 && Y-2 >= 0){
+                        const validBox = playgroundCoordinate.current[X-1][Y-2]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X-1 >=0 && Y+2 <= 7) {
+                        const validBox = playgroundCoordinate.current[X-1][Y+2] 
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X+1 <=7 && Y-2 >= 0){
+                        const validBox = playgroundCoordinate.current[X+1][Y-2]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    if(X+1 <=7 && Y+2 <= 7){
+                        const validBox = playgroundCoordinate.current[X+1][Y+2]
+                        console.log(validBox,'this is a valid box')
+                        const isActivated = ActivateComputedPathForKnight(validBox)
+                        if(isActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    }
                     console.log(possiblePath.current)
+
+                    for(let i = 0 ;i<possiblePath.current.length ; i++){
+                        if(possiblePath.current[i].children.length > 0){
+                            possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
+                        }
+                        possiblePath.current[i].addEventListener('click',AttachPiece)
+                    }
                     break;
                 case "bishop":
                     ComputePathForBishop(X,Y)
@@ -148,19 +247,97 @@ function Playground(){
                     ComputePathForRook(X,Y)
                     ComputePathForBishop(X,Y)
                     console.log(possiblePath.current)
+                    for(let i = 0 ; i<possiblePath.current.length ; i++){
+                        if(possiblePath.current[i].children.length > 0) {
+                            possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
+                        }
+                         possiblePath.current[i].addEventListener('click',AttachPiece)
+                    }
                     break;
                 case "king":
+                    
                     J = X 
                     K = Y
-                    if((J-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J-1][K])
-                    if((J-1) >=0 && (K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J-1][K-1])
-                    if((K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J][K-1])
-                    if((J-1) >=0 && (K+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[J-1][K+1])
-                    if((K+1) <= 7 ) possiblePath.current.push(playgroundCoordinate.current[J][K+1])
-                    if((J+1) <= 7 && (K-1) >= 0) possiblePath.current.push(playgroundCoordinate.current[J+1][K-1])
-                    if((J+1) <= 7) possiblePath.current.push(playgroundCoordinate.current[J+1][K])
-                    if((J+1) <= 7 && (K+1) <= 7 ) possiblePath.current.push(playgroundCoordinate.current[J+1][K+1])
+                    if((J-1) >= 0){
+                        const validBox = playgroundCoordinate.current[J-1][K]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        
+                    } 
+                    if((J-1) >=0 && (K-1) >= 0){
+
+                        const validBox = playgroundCoordinate.current[J-1][K-1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        // possiblePath.current.push(playgroundCoordinate.current[J-1][K-1])
+                    } 
+                    if((K-1) >= 0){
+                        const validBox = playgroundCoordinate.current[J][K-1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        // possiblePath.current.push(playgroundCoordinate.current[J][K-1])
+                    } 
+                    if((J-1) >=0 && (K+1) <= 7){
+                        const validBox = playgroundCoordinate.current[J-1][K+1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        // possiblePath.current.push(playgroundCoordinate.current[J-1][K+1])
+                    } 
+                    if((K+1) <= 7 ){
+                        const validBox = playgroundCoordinate.current[J][K+1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    } 
+                    // possiblePath.current.push(playgroundCoordinate.current[J][K+1])
+                    if((J+1) <= 7 && (K-1) >= 0){
+                        const validBox = playgroundCoordinate.current[J+1][K-1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                    }
+                    //  possiblePath.current.push(playgroundCoordinate.current[J+1][K-1])
+                    if((J+1) <= 7){
+                        const validBox = playgroundCoordinate.current[J+1][K]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        // possiblePath.current.push(playgroundCoordinate.current[J+1][K])
+                    } 
+                    if((J+1) <= 7 && (K+1) <= 7 ){
+                        const validBox = playgroundCoordinate.current[J+1][K+1]
+                        const isPathActivated = ActivateComputedPathForKnight(validBox)
+                        if(isPathActivated){
+                            validBox.classList.add('possible-path-bg')
+                            possiblePath.current.push(validBox)
+                        }
+                        // possiblePath.current.push(playgroundCoordinate.current[J+1][K+1])
+                    } 
                     console.log(possiblePath.current)
+                    for(let i = 0 ;i <possiblePath.current.length ; i++){
+                        if(possiblePath.current[i].children.length > 0) {
+                            possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
+                        }
+                         possiblePath.current[i].addEventListener('click',AttachPiece)
+                    }
                     break;
                 default :
                     break;
@@ -192,6 +369,7 @@ function Playground(){
         }
         for(let pathIndex = 0 ; pathIndex < possiblePath.current.length ; pathIndex ++){
             possiblePath.current[pathIndex]?.classList.remove('possible-path-bg')
+            possiblePath.current[pathIndex]?.children[0]?.removeEventListener('click',AttachPiece)
             possiblePath.current[pathIndex]?.removeEventListener('click',AttachPiece)
         }
         possiblePath.current= []
