@@ -53,3 +53,11 @@
     opacity: 0.4;
     cursor: pointer;
 }
+.inactive-piece{
+    pointer-events: none;
+}
+.active-piece{
+    pointer-events: all;
+}
+.hyper-active{
+}
