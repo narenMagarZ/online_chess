@@ -83,8 +83,6 @@ function Playground(){
     function ComputePossiblePath({target}){
         const {cord,id,type} = target.dataset
         const pieceWrapperCord = JSON.parse(cord)
-        console.log(pieceWrapperCord,id,type)
-
         if(possiblePath.current.length > 0){
             const len = possiblePath.current.length
             for(let i = 0 ; i < len ;i++) {
@@ -94,7 +92,6 @@ function Playground(){
             }
         }
         for(let i = 0 ; i < deactivatedPieces.current.length ; i++){
-            console.log(deactivatedPieces.current[i],'these are deactivated ')
             deactivatedPieces.current[i].addEventListener('click',ComputePossiblePath)
         }
         deactivatedPieces.current = []
@@ -175,18 +172,11 @@ function Playground(){
         activePiece.current.setAttribute('data-cord',pieceWrapperCord)
         const inactivatedPieces = document.querySelectorAll('.inactive-piece')
         const activatedPieces = document.querySelectorAll('.active-piece')
-        console.log(deactivatedPieces.current,'from attach piece')
         if(target.children.length > 0){
             target.removeChild(target.children[0])
             target.appendChild(activePiece.current)
         }
 
-        // if(target.children.length > 0){
-        //     console.log(target.children,'these are target children')
-        //     const targetParent = target.parentElement
-        //     targetParent.removeChild(target)
-        //     targetParent.appendChild(activePiece.current)
-        // }
         else {
             target.appendChild(activePiece.current)
         }
@@ -194,7 +184,10 @@ function Playground(){
             possiblePath.current[pathIndex]?.classList.remove('possible-path-bg')
             possiblePath.current[pathIndex]?.removeEventListener('click',AttachPiece)
         }
-  
+        for(let i =0 ; i<deactivatedPieces.current.length;i++){
+            deactivatedPieces.current[i].addEventListener('click',ComputePossiblePath)
+        }
+        deactivatedPieces.current = []
         if(activePieceType.current === 'host'){
             inactivatedPieces.forEach((pieceWrapper)=>{
                 pieceWrapper.classList.remove('inactive-piece')
@@ -223,13 +216,11 @@ function Playground(){
     }
     
     function AttachClickHandlerToPiece(){
-        console.log(possiblePath.current,'these are my child bro')
         for(let i = 0 ;i<possiblePath.current.length ;i++){
             if(possiblePath.current[i].children.length > 0){
                 possiblePath.current[i].children[0].removeEventListener('click',ComputePossiblePath)
                 deactivatedPieces.current.push(possiblePath.current[i].children[0])
             }
-            console.log(deactivatedPieces.current,'these are pushing state ')
             possiblePath.current[i].addEventListener('click',AttachPiece)
         }
 
