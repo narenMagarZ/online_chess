@@ -31,6 +31,7 @@ function App() {
   const [matchStatus,setMatchStatus] = useState(null) 
   const [isNotifierActive,setNotifierStatus] = useState(null)
   const [movementTurn,setMovementTurn] = useState(null)
+  const [isKingMurdered,setKingStatus] = useState(false)
   const matchInitialState = {
     'matchId' : null,
     'player1' : null, // this is the player, who first request to play
@@ -87,7 +88,7 @@ function App() {
         else if(type === 'RANDOMPLAYMATCHINGCANCELLED'){
           console.log(data.msg)
         } 
-        else if(type === 'STARTRANDOMMATCH'){
+        else if(type === 'STARTMATCH'){
           const {wait,startMatch,you,opponent,matchId,movementTurn} = data
           console.log(data,'case# start random match')
           if(!wait && startMatch) {
@@ -101,7 +102,6 @@ function App() {
                 'player1' : you,
                 'player2' : opponent,
                 'isMatchStart' : true,
-                // 'movementTurn' : movementTurn,
               }
              })
           }
@@ -185,21 +185,21 @@ function App() {
         else if(type === 'AFTERACCEPTTHEPLAYREQUEST'){
           console.log(data)
         }
-        else if(type === 'STARTMATCH'){
-          const {player1,player2,matchId} = data
-          console.log(data,'case# startmatch')
-          matchDispatcher({
-            'type' : 'startMatch',
-            'payload' : {
-              ...matchState,
-              'matchId' : matchId,
-              'player1' : player1,
-              'player2' : player2,
-              'firstTurn' : player1,
-              'isMatchStart' : true,
-            }
-          })
-        }
+        //else if(type === 'STARTMATCH'){
+         // const {player1,player2,matchId} = data
+          //console.log(data,'case# startmatch')
+         // matchDispatcher({
+           // 'type' : 'startMatch',
+           // 'payload' : {
+             // ...matchState,
+              //'matchId' : matchId,
+             // 'player1' : player1,
+              //'player2' : player2,
+              //'firstTurn' : player1,
+              //'isMatchStart' : true,
+            //}
+          //})
+        //}
         else if(type === 'PLAYERMOVEMENT') {
           
         } else if(type === 'testmsg'){
@@ -246,6 +246,9 @@ function App() {
   const setMovementTurnToNull = ()=>{
     setMovementTurn(()=>null)
   }
+  const murderedTheKing =()=>{
+    setKingStatus(()=>true)
+  }
   useEffect(()=>{
     const {isMatchStart,isTimerValueEqualTo1} = matchState
     if(isMatchStart && !isTimerValueEqualTo1){
@@ -272,6 +275,12 @@ function App() {
       },1000)
     }
   },[matchState])
+
+  useEffect(()=>{
+    if(isKingMurdered){
+      console.log('king down')
+    }
+  },[isKingMurdered])
   if(socket.current && isSocket)
   return (
     <socketContext.Provider value={socket.current}>
@@ -297,6 +306,8 @@ function App() {
      }
         </div>
       <ChessBoard
+      isKingMurdered = {isKingMurdered}
+      murderedTheKing = {murderedTheKing}
       me = {me.current}
       matchState = {matchState}
       movementTurn = {movementTurn}

@@ -6,7 +6,7 @@ import BK_PAWN  from '../../assets/pieces/remote_pieces/remote_pawn.svg'
 import WH_PAWN from '../../assets/pieces/host_pieces/host_pawn.svg'
 import { AddAttribute } from './addattribute'
 import { socketContext } from '../../app'
-function ChessBoard({matchState,me,movementTurn,setMovementTurnToNull}){
+function ChessBoard({matchState,me,movementTurn,setMovementTurnToNull,murderedTheKing}){
     const socket = useContext(socketContext)
     const dispatcher = useDispatch()
     const playgroundContainer = useRef(null)
@@ -107,16 +107,20 @@ function ChessBoard({matchState,me,movementTurn,setMovementTurnToNull}){
                         pieceWrapper.setAttribute('data-reversecord',pieceWrapperReverseCord)
                         if(row === 0){
                             const {id,val,type} = LoadRemotePieces()[col]
-                            // pieceWrapper.classList.add('inactive-piece')
+                            if(id === 'king'){
+
+                            }
                             AddAttribute(piece,pieceWrapper,id,type,val)
                         }
                         else if(row === 7){
                             const {id,val,type} = LoadHostPieces()[col]
+                            if(id === 'king'){
+
+                            }
                             pieceWrapper.classList.add('active-piece')
                             AddAttribute(piece,pieceWrapper,id,type,val)
                         }
                         else if(row === 1){
-                            // pieceWrapper.classList.add('inactive-piece')
                             AddAttribute(piece,pieceWrapper,'pawn','remote',BK_PAWN)
                         } 
                         else if(row === 6) {
@@ -236,6 +240,7 @@ function ChessBoard({matchState,me,movementTurn,setMovementTurnToNull}){
         //here checking for the children of targeted box
         
         if(target.children.length > 0){
+            if(target.dataset.id === 'king') murderedTheKing()
             target.removeChild(target.children[0])
             target.appendChild(activePiece.current.piece)
         }
