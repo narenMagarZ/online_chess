@@ -1,0 +1,54 @@
+.notifier-container {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.notifier-box-container{
+    border-radius:6px ;
+    background-color: #dee7e7;
+    overflow: hidden;
+}
+
+#notifier-content-container{
+    margin: 20px 5px;
+    display: flex;
+    align-items: center;
+    
+}
+#notifier-cancel-btn{
+    margin-right: 5px;
+}
+#notifier-ok-btn{
+    margin-left: 5px;
+}
+#notifier-head-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #4d4db8;
+    padding: 5px;
+    color: #ffffff;
+}
+#notifier-head-container > span {
+    font-weight: 600;
+}
+#notifier-action-btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px ;
+}
+
+#notifier-notification-container {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}

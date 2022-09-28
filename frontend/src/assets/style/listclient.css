@@ -1,0 +1,58 @@
+.list-client-container {
+    padding: 10px;
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+    margin: 0 30px;
+}
+.list-client-container > b{
+    margin: 10px 0;
+    margin-top: 0;
+}
+#id-wrapper{
+    align-self: center;
+    width: 100%;
+    margin: 5px ;
+    display: flex;
+    align-items: center;
+
+}
+#friend-btn{
+    width: 100%;
+}
+.add-friend-btn,.cancel-play-req-btn{
+    border: none;
+    font-size: 18px;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    background-color: transparent;
+}
+.add-friend-btn:hover,.cancel-play-req-btn:hover{
+    color: var(--addbtnhoverbg);
+}
+#request-friend-icon,#cancel-play-req-icon{
+    pointer-events: none;
+}
+.cancel-play-req-btn{
+    display: none;
+}
+
+.inactive-req-controller-btn{
+    display: none;
+}
+.active-req-controller-btn{
+    display: flex;
+}
+
+.active-leave-friendly-match-btn{
+    display: block;
+}
+.inactive-leave-friendly-match-btn{
+    display: none;
+}
+#leave-friendly-match-btn{
+    margin:  0 10px;
+    margin-left: 0;
+
+}

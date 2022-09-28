@@ -1,0 +1,10 @@
+.timer-container {
+    margin: 10px 0;
+}
+.timer-container > div {
+    padding: 5px;
+}
+.timer-container > div > span {
+    letter-spacing: 2px;
+    font-weight: 500;
+}
